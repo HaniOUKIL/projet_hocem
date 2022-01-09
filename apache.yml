@@ -1,0 +1,16 @@
+---
+- name: exemple sans become
+  hosts: all
+
+  vars:
+   - service:
+           name: apache
+           rpm: apache2
+
+
+  tasks:
+  - name: apache2
+    apt:
+         name:  "{{service.rpm}}"
+         state: present
+
