@@ -20,9 +20,3 @@
         mode: 0777
         #notify: start_apache
 
-  - name: configuration de virtualhost
-    copy:
-        src: /home/ubuntu/site1.conf
-        dest: /etc/apache2/sites-available/site1.conf
-        mode: 0777
-
