@@ -1,0 +1,50 @@
+---
+- name: Update and upgrade apt packages
+  apt:
+      #upgrade: yes
+      update_cache: yes
+
+- name: install JDK 11
+  apt:
+      name: openjdk-11-jdk
+      state: present
+
+- name: add tomcat group
+  group:
+      name: tomcat
+
+- name: add tomcat user
+  user:
+      name: tomcat
+      group: tomcat
+      home: /user/share/tomcat
+      createhome: no
+- name: create /opt/tomcat directory
+  file:
+      path: /opt/tomcat
+      state: directory
+      mode: 0755
+
+- name: download & unarchive
+  unarchive:
+      src: https://dlcdn.apache.org/tomcat/tomcat-8/v8.5.73/bin/apache-tomcat-8.5.73-fulldocs.tar.gz
+      dest: /opt/tomcat
+      remote_src: yes
+      extra_opts: [--strip-components=1]
+
+- name: Change ownership
+  file:
+      path: /opt/tomcat
+      owner: tomcat
+      group: tomcat
+      mode: "u+rwx,g+rx,o=rx"
+      recurse: yes
+      state: directory
+
+- name: Copy Tomcat service from local to remote
+  template:
+       src: ../templates/tomcat.service
+       dest: /etc/systemd/system/
+       mode: 0755
+  notify: start_tomcat
+
