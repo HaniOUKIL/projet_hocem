@@ -14,7 +14,7 @@ node {
  
  stage('Deploy') {
     
-     ansiblePlaybook become: true, inventory: 'hosts', playbook: 'installtomcat.yml'
+     ansiblePlaybook become: true, inventory: 'hosts', playbook: 'apache.yml'
 
  }
  
